@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.lunchrun.HomeActivity;
+import com.example.lunchrun.MainActivity;
 import com.example.lunchrun.R;
 import com.example.lunchrun.base.UserInfo;
 import com.example.lunchrun.model.User;
@@ -28,6 +32,8 @@ public class SignInActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setStatusBarColor(ContextCompat.getColor(SignInActivity.this, R.color.black));
+
         setContentView(R.layout.activity_signin);
 
         etEmail = findViewById(R.id.et_email);
