@@ -3,6 +3,7 @@ package com.example.lunchrun.sign;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,12 @@ import com.example.lunchrun.MainActivity;
 import com.example.lunchrun.R;
 import com.example.lunchrun.base.UserInfo;
 import com.example.lunchrun.model.User;
+import com.example.lunchrun.retrofit.ApiClient;
+import com.example.lunchrun.retrofit.ApiInterface;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class SignUpActivity extends Activity {
@@ -20,6 +27,7 @@ public class SignUpActivity extends Activity {
     private EditText etPwd;
     private EditText etPhone;
     private Button btnSignup;
+    private ApiInterface apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,8 @@ public class SignUpActivity extends Activity {
         etPwd = findViewById(R.id.et_pwd);
         etPhone = findViewById(R.id.et_phone);
         btnSignup = findViewById(R.id.btn_signup);
+
+        apiService = ApiClient.getClient().create(ApiInterface.class);
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,11 +79,24 @@ public class SignUpActivity extends Activity {
 
                 }
 
-                UserInfo.setUser(user);
+                // Create User Request
+                Call<String> call = apiService.createUser(user.getAlias(), user.getEmail(),user.getPassword(), user.getPhone());
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.d("SIGN UP", "CODE="+String.valueOf(response.code()));
+                        Log.d("SIGN UP", response.body().toString());
 
-                // user 등록 후 메인 페이지로 이동
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                startActivity(intent);
+                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("SIGN UP", "ERRORS!");
+                        Log.e("SIGN UP", t.toString());
+                    }
+                });
             }
         });
 

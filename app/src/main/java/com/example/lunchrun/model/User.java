@@ -1,26 +1,17 @@
 package com.example.lunchrun.model;
 
 public class User {
-    private Integer id;
     private String alias;
+    private String phone;
     private String email;
     private String password;
-    private String phone;
 
-    public Integer getId() {
-        return id;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -39,13 +30,16 @@ public class User {
         this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getAlias() {
+        return alias;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
-
+    @Override
+    public String toString() {
+        return "alias :" + alias + " phone:" + phone + " email:" + email + " password:" + password;
+    }
 }
