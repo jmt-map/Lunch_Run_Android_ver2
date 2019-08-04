@@ -2,59 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-
     <LinearLayout
         android:id="@+id/top"
+        android:layout_above="@+id/form"
+        android:layout_marginLeft="30dp"
         android:orientation="vertical"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp">
-        
+        android:gravity="center">
+
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/logo_small"
-            android:layout_marginBottom="10dp"/>
+            android:layout_width="160dp"
+            android:layout_height="150dp"
+            android:src="@drawable/title_logo"/>
 
         <TextView
             android:font ="@font/nanum_pen_script_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="welcome to the lunch run!" />
-
-    </LinearLayout>    
+            android:text="@string/slogan" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/form"
         android:gravity="center_vertical"
-        android:layout_above="@+id/btn_signup"
-        android:layout_below="@+id/top"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
 
         <TextView
             style="@style/normalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이름"/>
-
-        <EditText
-            android:id="@+id/et_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            style="@style/normalText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:text="E - Mail"/>
 
         <EditText
@@ -66,37 +50,24 @@
             style="@style/normalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="35dp"
             android:text="비밀번호"/>
 
         <EditText
             android:id="@+id/et_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <TextView
-            style="@style/normalText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="전화번호"/>
-
-        <EditText
-            android:id="@+id/et_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_signup"
+        android:layout_below="@+id/form"
         style="@style/roundbutton"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:backgroundTint="@color/yellow"
+        android:backgroundTint="@color/black"
         android:text="SIGN UP"
         android:textColor="@color/white"/>
 </RelativeLayout>

@@ -7,14 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.lunchrun.MainActivity;
 import com.example.lunchrun.R;
-import com.example.lunchrun.base.UserInfo;
 import com.example.lunchrun.model.User;
 import com.example.lunchrun.retrofit.ApiClient;
-import com.example.lunchrun.retrofit.ApiInterface;
+import com.example.lunchrun.retrofit.UserApiService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,7 +25,7 @@ public class SignUpActivity extends Activity {
     private EditText etPwd;
     private EditText etPhone;
     private Button btnSignup;
-    private ApiInterface apiService;
+    private UserApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class SignUpActivity extends Activity {
         etPhone = findViewById(R.id.et_phone);
         btnSignup = findViewById(R.id.btn_signup);
 
-        apiService = ApiClient.getClient().create(ApiInterface.class);
+        apiService = ApiClient.getClient().create(UserApiService.class);
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override

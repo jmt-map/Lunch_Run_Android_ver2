@@ -1,11 +1,9 @@
-package com.example.lunchrun.base;
+package com.example.lunchrun;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.lunchrun.R;
-import com.example.lunchrun.sign.SignUpActivity;
 
 public class SplashActivity  extends Activity {
     @Override
@@ -15,7 +13,7 @@ public class SplashActivity  extends Activity {
 
         try {
             Thread.sleep(1000);
-            Intent intent = new Intent(SplashActivity.this, SignUpActivity.class);
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
 
         } catch (InterruptedException e) {
