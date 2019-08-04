@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.lunchrun.sign.SignInActivity;
 import com.example.lunchrun.sign.SignUpActivity;
@@ -15,7 +16,7 @@ import com.example.lunchrun.sign.SignUpActivity;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnSignin;
-    private Button btnSignup;
+    private TextView btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         //        WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.black));
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_new_main);
 
         btnSignin = findViewById(R.id.btn_signin);
         btnSignup = findViewById(R.id.btn_signup);
