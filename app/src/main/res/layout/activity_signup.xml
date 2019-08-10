@@ -30,9 +30,9 @@
             android:fontFamily="@font/concert_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="lunch run"
+            android:text="Welcome!"
             android:textColor="@color/black"
-            android:textSize="60dp"/>
+            android:textSize="50dp"/>
     </LinearLayout>    
 
     <LinearLayout

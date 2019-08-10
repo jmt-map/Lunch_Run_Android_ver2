@@ -2,15 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lunchrun">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET">
+    </uses-permission>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION">
+    </uses-permission>
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@drawable/logo_small"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo_small"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="a50fcc6893b4821a8da2de70579cb920"/>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -1,6 +1,7 @@
 package com.example.lunchrun.sign;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,14 +9,22 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.lunchrun.MainActivity;
 import com.example.lunchrun.R;
 import com.example.lunchrun.model.User;
 import com.example.lunchrun.retrofit.ApiClient;
 import com.example.lunchrun.retrofit.UserApiService;
+
+import org.json.JSONArray;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,6 +65,7 @@ public class SignUpActivity extends Activity {
 
                 else{
                     // 이름 입력
+                    Toast.makeText(getApplicationContext(),"이름을 입력하세요",Toast.LENGTH_SHORT);
                 }
 
                 String email = etEmail.getText().toString();
@@ -63,7 +73,8 @@ public class SignUpActivity extends Activity {
                     user.setEmail(email);
                 }
                 else{
-
+                    // 이메일 입력
+                    Toast.makeText(getApplicationContext(),"이메일을 입력하세요",Toast.LENGTH_SHORT);
                 }
 
                 String pwd = etPwd.getText().toString();
@@ -71,7 +82,8 @@ public class SignUpActivity extends Activity {
                     user.setPassword(pwd);
                 }
                 else{
-
+                    // 비밀번호 입력
+                    Toast.makeText(getApplicationContext(),"비밀번호를 입력하세요",Toast.LENGTH_SHORT);
                 }
 
                 String phone = etPhone.getText().toString();
@@ -79,7 +91,8 @@ public class SignUpActivity extends Activity {
                     user.setPhone(phone);
                 }
                 else{
-
+                    // 전화번호 입력
+                    Toast.makeText(getApplicationContext(),"전화번호를 입력하세요",Toast.LENGTH_SHORT);
                 }
 
                 // Create User Request
@@ -102,7 +115,6 @@ public class SignUpActivity extends Activity {
                 });
             }
         });
-
     }
 
 }

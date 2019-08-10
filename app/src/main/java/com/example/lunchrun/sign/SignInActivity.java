@@ -1,6 +1,7 @@
 package com.example.lunchrun.sign;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,11 @@ import android.widget.EditText;
 
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.lunchrun.HomeActivity;
 import com.example.lunchrun.MainActivity;
 import com.example.lunchrun.R;
@@ -18,6 +24,8 @@ import com.example.lunchrun.base.UserInfo;
 import com.example.lunchrun.model.User;
 import com.example.lunchrun.retrofit.ApiClient;
 import com.example.lunchrun.retrofit.UserApiService;
+
+import org.json.JSONArray;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -83,8 +91,10 @@ public class SignInActivity extends Activity {
                         Log.e("SIGN IN", t.toString());
                     }
                 });
-
             }
         });
     }
+
+
+
 }
