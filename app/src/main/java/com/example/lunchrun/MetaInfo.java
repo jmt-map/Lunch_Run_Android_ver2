@@ -11,6 +11,25 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MetaInfo {
+    private static String nativeKey = " a5;0fcc6893b4821a8da2de70579cb920";
+    private static String adminKey = "27f10765ae7a54ecb11f0c397f81e236";
+    private static String restKey ="0020cc55bc997c846f5414c238d655b2";
+    private static String appaKey = "dLyxtvPJkmENwwmDjCLcrR7YjZc=";
+    public static String getNativeKey() {
+        return nativeKey;
+    }
+
+    public static  String getAdminKey() {
+        return adminKey;
+    }
+
+    public static  String getRestKey() {
+        return restKey;
+    }
+
+    private static String getAppKey(){
+        return appaKey;
+    }
     public static String getSigneture(Context context){
         PackageManager pm = context.getPackageManager();
         try{
@@ -31,7 +50,6 @@ public class MetaInfo {
         }catch(PackageManager.NameNotFoundException e){
             e.printStackTrace();
         }
-
         return null;
     }
 }

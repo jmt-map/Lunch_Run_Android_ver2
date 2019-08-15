@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface UserApiService {
 
     @FormUrlEncoded
-    @POST("post")
+    @POST("auth/signup")
     Call<String> createUser(
             @Field("alias") String alias,
             @Field("email") String email,

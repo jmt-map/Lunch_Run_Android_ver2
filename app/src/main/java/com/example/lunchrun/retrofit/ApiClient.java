@@ -25,7 +25,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ApiClient {
     private static Retrofit retrofit = null;
-    private static String baseUrl = "https://54.180.89.60:3000/";
+    private static String baseUrl = "https://54.180.89.60/";
 
     public static Retrofit getClient() {
         if (retrofit == null) {
