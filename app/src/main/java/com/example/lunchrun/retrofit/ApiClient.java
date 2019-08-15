@@ -3,6 +3,7 @@ package com.example.lunchrun.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -17,7 +18,10 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.ConnectionSpec;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.TlsVersion;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,19 +29,17 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ApiClient {
     private static Retrofit retrofit = null;
-    private static String baseUrl = "https://54.180.89.60/";
+    private static String baseUrl = "http://54.180.89.60/";
 
     public static Retrofit getClient() {
+        /*
         if (retrofit == null) {
+
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .connectTimeout(1, TimeUnit.MINUTES)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(15, TimeUnit.SECONDS)
                     .build();
-
-            Gson gson = new GsonBuilder()
-                    .setLenient()
-                    .create();
 
             X509TrustManager trustManager = null;
 
@@ -70,13 +72,42 @@ public class ApiClient {
                 e.printStackTrace();
             }
 
+
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+
+            OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+            httpClientBuilder.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request.Builder requestBuilder = chain.request().newBuilder();
+                    requestBuilder.header("Content-Type", "application/json");
+                    requestBuilder.header("Accept", "application/json");
+                    return chain.proceed(requestBuilder.build());
+                }
+            });
+
+            OkHttpClient httpClient = httpClientBuilder.build();
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
-                    .client(client.build())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
         return retrofit;
+        */
+
+        if(retrofit==null){
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+        }
+        return retrofit;
     }
+
 }

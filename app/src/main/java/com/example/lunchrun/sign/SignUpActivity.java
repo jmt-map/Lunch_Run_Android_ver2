@@ -26,6 +26,10 @@ import com.example.lunchrun.retrofit.UserApiService;
 
 import org.json.JSONArray;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,21 +98,44 @@ public class SignUpActivity extends Activity {
                     // 전화번호 입력
                     Toast.makeText(getApplicationContext(),"전화번호를 입력하세요",Toast.LENGTH_SHORT);
                 }
-
                 // Create User Request
-                Call<String> call = apiService.createUser(user.getAlias(), user.getEmail(),user.getPassword(), user.getPhone());
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        Log.d("SIGN UP", "CODE="+String.valueOf(response.code()));
-                        Log.d("SIGN UP", response.body().toString());
+                HashMap<String, Object> param = new HashMap<>();
+                param.put("email", user.getEmail());
+                param.put("password", user.getPassword());
+                param.put("alias", user.getAlias());
+                param.put("phone", user.getPhone());
+                Log.e("SIGN UP", param.toString());
 
+
+                Call<Object> call = apiService.createUser(param);
+                call.enqueue(new Callback<Object>() {
+                    @Override
+                    public void onResponse(Call<Object> call, Response<Object> response) {
+                        Log.d("SIGN UP", "CODE="+String.valueOf(response.code()));
+                        if(response.message()!=null)
+                            Log.d("SIGN UP", "RESPONSE " + response.message());
+                        if(response.errorBody()!=null) {
+                            try {
+                                Log.d("SIGN UP", "RESPONSE " + response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if( response.body() !=null){
+                            if(response.code()==200)
+                                Log.d("SIGN UP", String.valueOf((Long)response.body()));
+
+                            else
+                                Log.d("SIGN UP", (String)response.body());
+                        }
                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                         startActivity(intent);
+
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                    public void onFailure(Call<Object> call, Throwable t) {
+
                         Log.e("SIGN UP", "ERRORS!");
                         Log.e("SIGN UP", t.toString());
                     }
