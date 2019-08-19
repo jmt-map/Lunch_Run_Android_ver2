@@ -6,6 +6,8 @@ import androidx.core.content.ContextCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,6 +30,7 @@ import com.example.lunchrun.retrofit.TestApiService;
 import com.example.lunchrun.retrofit.UserApiService;
 import com.example.lunchrun.sign.SignInActivity;
 import com.example.lunchrun.sign.SignUpActivity;
+import com.example.lunchrun.utils.AsteriskPasswordTransformationMethod;
 
 import org.json.JSONArray;
 
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         btnSignup = findViewById(R.id.btn_signup);
         etEmail = findViewById(R.id.et_email);
         etPwd = findViewById(R.id.et_pwd);
+
+        etPwd.setTransformationMethod(new AsteriskPasswordTransformationMethod());
 
         btnSignin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,4 +142,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

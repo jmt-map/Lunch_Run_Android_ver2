@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +25,7 @@ import com.example.lunchrun.R;
 import com.example.lunchrun.model.User;
 import com.example.lunchrun.retrofit.ApiClient;
 import com.example.lunchrun.retrofit.UserApiService;
+import com.example.lunchrun.utils.AsteriskPasswordTransformationMethod;
 
 import org.json.JSONArray;
 
@@ -52,7 +55,10 @@ public class SignUpActivity extends Activity {
 
         etName = findViewById(R.id.et_name);
         etEmail = findViewById(R.id.et_email);
+
         etPwd = findViewById(R.id.et_pwd);
+        etPwd.setTransformationMethod(new AsteriskPasswordTransformationMethod());
+
         etPhone = findViewById(R.id.et_phone);
         btnSignup = findViewById(R.id.btn_signup);
 
@@ -92,12 +98,14 @@ public class SignUpActivity extends Activity {
 
                 String phone = etPhone.getText().toString();
                 if(phone!=null && phone.length()>0){
+                    phone = phone.substring(0,3) + "-" + phone.substring(3,7) + "-" + phone.substring(7);
                     user.setPhone(phone);
                 }
                 else{
                     // 전화번호 입력
                     Toast.makeText(getApplicationContext(),"전화번호를 입력하세요",Toast.LENGTH_SHORT);
                 }
+
                 // Create User Request
                 HashMap<String, Object> param = new HashMap<>();
                 param.put("email", user.getEmail());
@@ -105,7 +113,6 @@ public class SignUpActivity extends Activity {
                 param.put("alias", user.getAlias());
                 param.put("phone", user.getPhone());
                 Log.e("SIGN UP", param.toString());
-
 
                 Call<Object> call = apiService.createUser(param);
                 call.enqueue(new Callback<Object>() {
