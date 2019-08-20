@@ -12,11 +12,22 @@ import androidx.fragment.app.Fragment;
 
 import com.example.lunchrun.MetaInfo;
 import com.example.lunchrun.R;
+import com.example.lunchrun.base.UserInfo;
+import com.example.lunchrun.model.Restaurant;
+import com.example.lunchrun.retrofit.ApiClient;
+import com.example.lunchrun.retrofit.RestaurantApiService;
+import com.example.lunchrun.retrofit.UserApiService;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapFragment extends Fragment {
     private View v;
@@ -26,6 +37,7 @@ public class MapFragment extends Fragment {
 
     private String curAdr;
     private MapPoint curPoint;
+    private RestaurantApiService apiService;
 
     @Nullable
     @Override
@@ -38,9 +50,26 @@ public class MapFragment extends Fragment {
 
         curPoint = MapPoint.mapPointWithGeoCoord(37.0, 127.0);
 
-        getAddress(curPoint);
-        addMarker(curPoint);
+//        getAddress(curPoint);
+//        addMarker(curPoint);
 
+        apiService=  ApiClient.getClient().create(RestaurantApiService.class);
+        Call<List<Restaurant>> call = apiService.getRestaurantList(UserInfo.getToken(),0, 0);
+        call.enqueue(new Callback<List<Restaurant>>() {
+            @Override
+            public void onResponse(Call<List<Restaurant>> call, Response<List<Restaurant>> response) {
+                Log.d("REST", "CODE +" +response.code());
+                if(response.body()!=null){
+                    List<Restaurant> restList = response.body();
+                    Log.d("REST", "List +" +restList.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Restaurant>> call, Throwable t) {
+
+            }
+        });
         return v;
     }
 
