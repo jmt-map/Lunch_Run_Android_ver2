@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.example.lunchrun.MetaInfo;
 import com.example.lunchrun.R;
 import com.example.lunchrun.base.UserInfo;
 import com.example.lunchrun.model.Restaurant;
+import com.example.lunchrun.model.RestaurantCategory;
 import com.example.lunchrun.retrofit.ApiClient;
 import com.example.lunchrun.retrofit.RestaurantApiService;
 import com.example.lunchrun.retrofit.UserApiService;
@@ -39,21 +41,44 @@ public class MapFragment extends Fragment {
     private MapPoint curPoint;
     private RestaurantApiService apiService;
 
+    private ListView listView;
+    private RestaurantListViewAdapter listViewAdapter;
+    private List<RestaurantCategory> categories;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_map_menu, container, false);
-
+/*
         mapView = new MapView(getActivity());
         ViewGroup mapViewContainer = v.findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
 
         curPoint = MapPoint.mapPointWithGeoCoord(37.0, 127.0);
-
+*/
 //        getAddress(curPoint);
 //        addMarker(curPoint);
 
+        listView = v.findViewById(R.id.restaurant_list_view);
+
         apiService=  ApiClient.getClient().create(RestaurantApiService.class);
+
+        Call<List<RestaurantCategory>> categoryCall = apiService.getRestaurantCategoryList(UserInfo.getToken());
+        categoryCall.enqueue(new Callback<List<RestaurantCategory>>() {
+            @Override
+            public void onResponse(Call<List<RestaurantCategory>> call, Response<List<RestaurantCategory>> response) {
+                Log.d("REST CATEGORY", "CODE"+response.code());
+                categories = response.body();
+                Log.d("REST CATEGORY", categories.toString());
+
+            }
+
+            @Override
+            public void onFailure(Call<List<RestaurantCategory>> call, Throwable t) {
+
+            }
+        });
+
         Call<List<Restaurant>> call = apiService.getRestaurantList(UserInfo.getToken(),0, 0);
         call.enqueue(new Callback<List<Restaurant>>() {
             @Override
@@ -62,6 +87,7 @@ public class MapFragment extends Fragment {
                 if(response.body()!=null){
                     List<Restaurant> restList = response.body();
                     Log.d("REST", "List +" +restList.toString());
+                    setRestaurantListView(restList);
                 }
             }
 
@@ -73,6 +99,10 @@ public class MapFragment extends Fragment {
         return v;
     }
 
+    private void setRestaurantListView(List<Restaurant> list){
+        listViewAdapter = new RestaurantListViewAdapter(v.getContext(),list, categories );
+        listView.setAdapter(listViewAdapter);
+    }
 
     private void getAddress(MapPoint mapPoint){
         reverseGeoCodingResultListener = new MapReverseGeoCoder.ReverseGeoCodingResultListener() {

@@ -5,17 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
+import com.example.lunchrun.R;
 import com.example.lunchrun.model.Restaurant;
+import com.example.lunchrun.model.RestaurantCategory;
 
 import java.util.List;
 
 public class RestaurantListViewAdapter extends BaseAdapter {
     private List<Restaurant> list;
     private LayoutInflater inflater;
-    public RestaurantListViewAdapter(Context context, List<Restaurant> list){
+    private  List<RestaurantCategory> categories;
+    public RestaurantListViewAdapter(Context context, List<Restaurant> list, List<RestaurantCategory> categories){
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.list=list;
+        this.categories = categories;
     }
     @Override
     public int getCount() {
@@ -40,11 +45,41 @@ public class RestaurantListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        ViewHolder holder = null;
+        if(convertView ==null){
+            convertView = inflater.inflate(R.layout.item_restaurant,parent,false);
+            holder = new ViewHolder();
+
+            holder.name = convertView.findViewById(R.id.name);
+            holder.category = convertView.findViewById(R.id.category);
+            holder.rate = convertView.findViewById(R.id.rate);
+
+            convertView.setTag(holder);
+        }
+
+        else{
+            holder= (ViewHolder)convertView.getTag();
+        }
+
+        Restaurant rest = list.get(position);
+        holder.name.setText(rest.getName());
+        String c ="";
+        for(int i=0; i<categories.size(); i++){
+            if(categories.get(i).getId() == rest.getCategory_id()){
+                c = categories.get(i).getName();
+            }
+        }
+        holder.category.setText(c);
+
+        String r = "평점 4.2";
+        holder.rate.setText(r);
+        return convertView;
     }
 
-    private class ViewHoleder{
-
+    private class ViewHolder{
+        TextView name;
+        TextView category;
+        TextView rate;
     }
 }
 

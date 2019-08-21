@@ -31,6 +31,7 @@ import com.example.lunchrun.retrofit.UserApiService;
 import com.example.lunchrun.sign.SignInActivity;
 import com.example.lunchrun.sign.SignUpActivity;
 import com.example.lunchrun.utils.AsteriskPasswordTransformationMethod;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 
@@ -106,8 +107,10 @@ public class MainActivity extends AppCompatActivity {
                         user.setEmail(email);
                         user.setPassword(pwd);
                         UserInfo.setUser(user);
-                        UserInfo.setToken(response.body().toString());
-
+                        String token = response.body().toString().substring(7);
+                        token = token.substring(0,token.length()-1);
+                        Log.d("SIGN IN token",token);
+                        UserInfo.setToken(token);
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }
