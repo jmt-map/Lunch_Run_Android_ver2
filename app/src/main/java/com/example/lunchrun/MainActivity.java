@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.black));
 
         setContentView(R.layout.activity_new_main);
-        getAllUsers();
+        //getAllUsers();
 
         btnSignin = findViewById(R.id.btn_signin);
         btnSignup = findViewById(R.id.btn_signup);
@@ -134,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 Log.d("SIGN IN", "CODE " + String.valueOf(response.code()));
-                Log.d("SIGN IN", response.body().toString());
-
             }
 
             @Override
