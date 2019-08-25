@@ -80,7 +80,7 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
 
         apiService = ApiClient.getClient().create(RestaurantApiService.class);
 
-        /*Call<List<RestaurantCategory>> categoryCall = apiService.getRestaurantCategoryList(UserInfo.getToken());
+        Call<List<RestaurantCategory>> categoryCall = apiService.getRestaurantCategoryList(UserInfo.getToken());
         categoryCall.enqueue(new Callback<List<RestaurantCategory>>() {
             @Override
             public void onResponse(Call<List<RestaurantCategory>> call, Response<List<RestaurantCategory>> response) {
@@ -94,47 +94,12 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
             public void onFailure(Call<List<RestaurantCategory>> call, Throwable t) {
 
             }
-        });*/
+        });
 
         pageList = new ArrayList<>();
         restaurants = new ArrayList<>();
-        requestRestaurantList2(0);
+        requestRestaurantList(0);
         return v;
-    }
-
-    private void requestRestaurantList2(int pageNum) {
-        mLockListView = true;
-        Log.d("GET LIST PAGE", String.valueOf(pageNum));
-
-        RestaurantRequestBody body = new RestaurantRequestBody();
-        body.setCategory_id(0);
-        body.setPage(pageNum);
-        Call<List<Restaurant>> call = apiService.getRestaurants(UserInfo.getToken(),body);
-        call.enqueue(new Callback<List<Restaurant>>() {
-            @Override
-            public void onResponse(Call<List<Restaurant>> call, Response<List<Restaurant>> response) {
-                Log.d("REST", "CODE +" +response.code());
-                if(response.body()!=null){
-                    Log.d("REST", "List +" +restaurants.toString());
-                    restaurants.addAll( response.body());
-                    Log.d("REST", "List +" +response.body().toString());
-
-                    if( listViewAdapter!=null)
-                        listViewAdapter.notifyDataSetChanged();
-
-                    else{
-                        initRestaurantListView(restaurants);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Restaurant>> call, Throwable t) {
-
-            }
-        });
-        progressBar.setVisibility(View.GONE);
-        mLockListView = false;
     }
 
     private void requestRestaurantList(int pageNum) {
@@ -145,13 +110,12 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
         pageList.add(pageNum);
         Log.d("GET LIST PAGE", pageList.toString());
 
-        Call<List<Restaurant>> call = apiService.getRestaurantList(UserInfo.getToken(),0, pageNum);
+        Call<List<Restaurant>> call = apiService.getRestaurantList(UserInfo.getToken(),null, pageNum);
         call.enqueue(new Callback<List<Restaurant>>() {
             @Override
             public void onResponse(Call<List<Restaurant>> call, Response<List<Restaurant>> response) {
                 Log.d("REST", "CODE +" +response.code());
                 if(response.body()!=null){
-                    Log.d("REST", "List +" +restaurants.toString());
                     restaurants.addAll( response.body());
                     Log.d("REST", "List +" +response.body().toString());
 
@@ -189,7 +153,7 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
             Log.d("SCROLL", "BOTTOM");
             // 다음 데이터를 불러온다.
             page++;
-            requestRestaurantList2(page);
+            requestRestaurantList(page);
         }
 
     }
