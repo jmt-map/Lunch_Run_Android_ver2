@@ -72,7 +72,6 @@ public class MapFragment extends Fragment {
                 Log.d("REST CATEGORY", categories.toString());
 
             }
-
             @Override
             public void onFailure(Call<List<RestaurantCategory>> call, Throwable t) {
 

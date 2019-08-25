@@ -3,9 +3,45 @@
     android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:background="@color/gray"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="review"/>
+        android:layout_height="110dp">
+
+        <TextView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
+
+            <TextView
+                android:layout_marginLeft="15dp"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@color/white"/>
+
+            <TextView
+                android:layout_marginHorizontal="15dp"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+    <ListView
+        android:layout_below="@+id/top"
+        android:id="@+id/restaurant_list_view"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
 </RelativeLayout>
