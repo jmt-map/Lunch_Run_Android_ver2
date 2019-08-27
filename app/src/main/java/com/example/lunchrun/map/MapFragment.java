@@ -61,7 +61,7 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_map_menu, container, false);
+        v = inflater.inflate(R.layout.fragment_review_menu, container, false);
 /*
         mapView = new MapView(getActivity());
         ViewGroup mapViewContainer = v.findViewById(R.id.map_view);
@@ -80,14 +80,13 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
 
         apiService = ApiClient.getClient().create(RestaurantApiService.class);
 
+        Log.d("TOKEN", UserInfo.getToken());
         Call<List<RestaurantCategory>> categoryCall = apiService.getRestaurantCategoryList(UserInfo.getToken());
         categoryCall.enqueue(new Callback<List<RestaurantCategory>>() {
             @Override
             public void onResponse(Call<List<RestaurantCategory>> call, Response<List<RestaurantCategory>> response) {
                 Log.d("REST CATEGORY", "CODE"+response.code());
                 categories = response.body();
-                Log.d("REST CATEGORY", categories.toString());
-
             }
 
             @Override

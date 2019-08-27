@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
@@ -22,6 +23,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.lunchrun.base.SavedSharedPreference;
 import com.example.lunchrun.base.UserInfo;
 import com.example.lunchrun.model.TestModel;
 import com.example.lunchrun.model.User;
@@ -53,9 +55,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.black));
-
         setContentView(R.layout.activity_new_main);
-        //getAllUsers();
+
+        if(SavedSharedPreference.getUserToken(MainActivity.this) == null || SavedSharedPreference.getUserToken(MainActivity.this).length()==0 ){
+            User user = new User();
+            user.setEmail(SavedSharedPreference.getUserEmail(MainActivity.this));
+            user.setPassword(SavedSharedPreference.getUserPassword(MainActivity.this));
+            UserInfo.setUser(user);
+            UserInfo.setToken(SavedSharedPreference.getUserToken(MainActivity.this));
+            Log.d("TOKEN", UserInfo.getToken());
+
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
 
         btnSignin = findViewById(R.id.btn_signin);
         btnSignup = findViewById(R.id.btn_signup);
@@ -102,15 +114,18 @@ public class MainActivity extends AppCompatActivity {
                 if(response.code()==200) {
                     loginFlag = true;
                     if (response.body() != null) {
-                        Log.d("SIGN IN token", response.body().toString());
                         User user = new User();
                         user.setEmail(email);
                         user.setPassword(pwd);
                         UserInfo.setUser(user);
+
                         String token = response.body().toString().substring(7);
                         token = token.substring(0,token.length()-1);
-                        Log.d("SIGN IN token",token);
                         UserInfo.setToken(token);
+
+                        SavedSharedPreference.setUserToken(MainActivity.this, UserInfo.getToken());
+                        SavedSharedPreference.setUserEmail(MainActivity.this,email);
+                        SavedSharedPreference.setUserPassword(MainActivity.this, pwd);
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }
