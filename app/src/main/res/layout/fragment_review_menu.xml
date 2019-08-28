@@ -1,10 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:background="@color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:background="@color/gray"
+        android:id="@+id/top"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <EditText
+            android:background="@color/white"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:hint="  이름을 입력하세요"
+            style="@style/normalText"/>
+
+        <LinearLayout
+            android:layout_marginHorizontal="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:background="@color/white"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="35dp" >
+            </Spinner>
+
+            <Spinner
+                android:id="@+id/tag_spinner"
+                android:background="@color/white"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="35dp" >
+            </Spinner>
+        </LinearLayout>
+    </LinearLayout>
 
     <ListView
+        android:layout_below="@+id/top"
         android:id="@+id/restaurant_list_view"
         android:layout_margin="10dp"
         android:layout_width="match_parent"

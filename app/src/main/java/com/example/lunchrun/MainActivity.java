@@ -57,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.black));
         setContentView(R.layout.activity_new_main);
 
-        if(SavedSharedPreference.getUserToken(MainActivity.this) == null || SavedSharedPreference.getUserToken(MainActivity.this).length()==0 ){
+        if( SavedSharedPreference.getUserToken(MainActivity.this)!=null)
+            Log.d("SAVED INFO", SavedSharedPreference.getUserToken(MainActivity.this));
+        else
+            Log.d("SAVED INFO", "TOKEN NULL");
+
+        if(SavedSharedPreference.getUserToken(MainActivity.this) != null || SavedSharedPreference.getUserToken(MainActivity.this).length()>0 ){
+
             User user = new User();
             user.setEmail(SavedSharedPreference.getUserEmail(MainActivity.this));
             user.setPassword(SavedSharedPreference.getUserPassword(MainActivity.this));
@@ -126,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
                         SavedSharedPreference.setUserToken(MainActivity.this, UserInfo.getToken());
                         SavedSharedPreference.setUserEmail(MainActivity.this,email);
                         SavedSharedPreference.setUserPassword(MainActivity.this, pwd);
+                        Log.d("SP SAVED", SavedSharedPreference.getUserToken(MainActivity.this));
+                        Log.d("SP SAVED", SavedSharedPreference.getUserEmail(MainActivity.this));
+                        Log.d("SP SAVED", SavedSharedPreference.getUserPassword(MainActivity.this));
+
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }
@@ -141,22 +151,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    public void getAllUsers(){
-        UserApiService apiService = ApiClient.getClient().create(UserApiService.class);
-        Call<List<User>> call = apiService.getAllUsers();
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                Log.d("SIGN IN", "CODE " + String.valueOf(response.code()));
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Log.e("SIGN IN", "ERRORS!");
-                Log.e("SIGN IN", t.toString());
-            }
-        });
-    }
 
 }

@@ -4,6 +4,7 @@ import com.example.lunchrun.model.Restaurant;
 import com.example.lunchrun.model.RestaurantCategory;
 import com.example.lunchrun.model.RestaurantPoint;
 import com.example.lunchrun.model.RestaurantRequestBody;
+import com.example.lunchrun.model.Tag;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +31,13 @@ public interface RestaurantApiService {
     @GET("restaurant")
     Call<List<RestaurantPoint>> getRestaurantPoints(@Header("x-access-token")String userToken,@Query("category_id")Integer categoryId);
 
-
     @Headers({"Content-Type:application/json"})
     @GET("restaurantCategory")
     Call<List<RestaurantCategory>> getRestaurantCategoryList(@Header("x-access-token")String userToken);
 
+    @Headers({"Content-Type:application/json"})
+    @GET("tag")
+    Call<List<Tag>> getTagList(@Header("x-access-token")String userToken);
 
 
 }
