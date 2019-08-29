@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private String appKey;
     private EditText etEmail, etPwd;
     private boolean loginFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

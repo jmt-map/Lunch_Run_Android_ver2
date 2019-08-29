@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.lunchrun.MetaInfo;
 import com.example.lunchrun.R;
+import com.example.lunchrun.base.CategoryTagSharedPreference;
 import com.example.lunchrun.base.UserInfo;
 import com.example.lunchrun.model.Restaurant;
 import com.example.lunchrun.model.RestaurantCategory;
@@ -69,6 +70,7 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
     private boolean lastItemVisibleFlag = false;
     private boolean mLockListView = false;
     private int page=0;
+    private int curCategory =0;
 
     @Nullable
     @Override
@@ -93,77 +95,59 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
         restaurants = new ArrayList<>();
 
         // splash 할 때, 미리 category & tag 받아와서 SP에 저장해두고 !!!!!!!!!
+        if(CategoryTagSharedPreference.getCategoryList()!=null){
+            ArrayAdapter categorySpinnerAdapter = new ArrayAdapter(v.getContext(),R.layout.support_simple_spinner_dropdown_item, CategoryTagSharedPreference.getCategoryList());
+            categorySpinner.setAdapter(categorySpinnerAdapter);
 
-        // 카테고리
-        Call<List<RestaurantCategory>> categoryCall = apiService.getRestaurantCategoryList(UserInfo.getToken());
-        categoryCall.enqueue(new Callback<List<RestaurantCategory>>() {
-            @Override
-            public void onResponse(Call<List<RestaurantCategory>> call, Response<List<RestaurantCategory>> response) {
-                Log.d("REST CATEGORY", "CODE"+response.code());
-                categories = response.body();
-                categoriesStr = new ArrayList<>();
-                for(RestaurantCategory category : categories){
-                    categoriesStr.add(category.getName());
+            categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    pageList.clear();
+                    restaurants.clear();
+                    curCategory = position;
+                    requestRestaurantList(0);
+                    Log.d("CATEGORY CLICKED", String.valueOf(position));
                 }
-                ArrayAdapter categorySpinnerAdapter = new ArrayAdapter(v.getContext(),R.layout.support_simple_spinner_dropdown_item, categoriesStr);
-                categorySpinner.setAdapter(categorySpinnerAdapter);
-                categorySpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        requestRestaurantList(0, position);
-                    }
-                });
-            }
 
-            @Override
-            public void onFailure(Call<List<RestaurantCategory>> call, Throwable t) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-
-        // 태그
-        Call<List<Tag>> tagCall = apiService.getTagList(UserInfo.getToken());
-        tagCall.enqueue(new Callback<List<Tag>>() {
-            @Override
-            public void onResponse(Call<List<Tag>> call, Response<List<Tag>> response) {
-                Log.d("REST TAG", "CODE "+response.code());
-                tags = new ArrayList<>();
-                for(Tag tag : response.body()){
-                    tags.add(tag.getName());
                 }
-                ArrayAdapter tagSpinnerAdapter = new ArrayAdapter(v.getContext(), R.layout.support_simple_spinner_dropdown_item, tags);
-                tagSpinner.setAdapter(tagSpinnerAdapter);
-                tagSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        // Tag 필터 처리
-                    }
-                });
-            }
+            });
+        }
 
-            @Override
-            public void onFailure(Call<List<Tag>> call, Throwable t) {
+        if(CategoryTagSharedPreference.getTagList()!=null){
+            ArrayAdapter tagSpinnerAdapter = new ArrayAdapter(v.getContext(), R.layout.support_simple_spinner_dropdown_item, CategoryTagSharedPreference.getTagList());
+            tagSpinner.setAdapter(tagSpinnerAdapter);
+            tagSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d("TAG CLICKED", String.valueOf(position));
+                }
 
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-        requestRestaurantList(0, -1);
+                }
+            });
+        }
+        requestRestaurantList(0);
         return v;
     }
 
-    private void requestRestaurantList(int pageNum, int category_id) {
+    private void requestRestaurantList(int pageNum) {
         mLockListView = true;
         if( pageList.contains(pageNum))
             return;
 
+        Log.d("CATEGORY ID = ", String.valueOf(curCategory));
         pageList.add(pageNum);
-        Log.d("GET LIST PAGE", pageList.toString());
 
-        Integer cid = null;
-        if( category_id!=-1)
-            cid = category_id;
+        Integer ct = curCategory;
+        if(curCategory==0)
+            ct=null;
 
-        Call<List<Restaurant>> call = apiService.getRestaurantList(UserInfo.getToken(),cid, pageNum);
+        Call<List<Restaurant>> call = apiService.getRestaurantList(UserInfo.getToken(),ct, pageNum);
         call.enqueue(new Callback<List<Restaurant>>() {
             @Override
             public void onResponse(Call<List<Restaurant>> call, Response<List<Restaurant>> response) {
@@ -192,7 +176,7 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
 
 
     private void initRestaurantListView(List<Restaurant> list){
-        listViewAdapter = new RestaurantListViewAdapter(v.getContext(),list, categories );
+        listViewAdapter = new RestaurantListViewAdapter(v.getContext(),list);
         listView.setAdapter(listViewAdapter);
     }
 
@@ -206,7 +190,7 @@ public class MapFragment extends Fragment implements AbsListView.OnScrollListene
             Log.d("SCROLL", "BOTTOM");
             // 다음 데이터를 불러온다.
             page++;
-            requestRestaurantList(page, -1);
+            requestRestaurantList(page);
         }
 
     }

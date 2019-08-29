@@ -8,19 +8,22 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.lunchrun.R;
+import com.example.lunchrun.base.CategoryTagSharedPreference;
 import com.example.lunchrun.model.Restaurant;
 import com.example.lunchrun.model.RestaurantCategory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantListViewAdapter extends BaseAdapter {
     private List<Restaurant> list;
     private LayoutInflater inflater;
-    private  List<RestaurantCategory> categories;
-    public RestaurantListViewAdapter(Context context, List<Restaurant> list, List<RestaurantCategory> categories){
+    private  ArrayList<String> categories;
+
+    public RestaurantListViewAdapter(Context context, List<Restaurant> list){
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.list=list;
-        this.categories = categories;
+        this.categories = CategoryTagSharedPreference.getCategoryList();
     }
     @Override
     public int getCount() {
@@ -63,12 +66,8 @@ public class RestaurantListViewAdapter extends BaseAdapter {
 
         Restaurant rest = list.get(position);
         holder.name.setText(rest.getName());
-        String c ="";
-        for(int i=0; i<categories.size(); i++){
-            if(categories.get(i).getId() == rest.getCategory_id()){
-                c = categories.get(i).getName();
-            }
-        }
+
+        String c = categories.get(rest.getCategory_id());
         holder.category.setText(c);
 
         String r = "평점 4.2";

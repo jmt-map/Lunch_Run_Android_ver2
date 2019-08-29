@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class SavedSharedPreference {
-
     static final String PREF_USER_EMAIL = "email";
     static final String PREF_USER_PWD = "password";
     static final String PREF_USER_TOKEN = "token";
